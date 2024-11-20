@@ -1,4 +1,4 @@
-#### cheat sheet relational algebra
+# Cheat Sheet Relational Algebra
 
 ---
 
