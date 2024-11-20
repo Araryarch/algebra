@@ -1,4 +1,4 @@
-Berikut adalah **cheat sheet** **relational algebra** dengan nama dalam bahasa aslinya dan deskripsi dalam bahasa Indonesia:  
+**cheat sheet** **relational algebra**
 
 ---
 
