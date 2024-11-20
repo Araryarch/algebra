@@ -58,4 +58,148 @@
 
 ---
 
-Semoga cheat sheet ini membantu! Jika ada yang ingin dijelaskan lebih detail, beri tahu saya. 😊
+# CONTOH IMPLEMENTASI
+
+---
+
+### **Relasi Awal**
+#### Relasi `Karyawan`
+| id_karyawan | nama       | usia | id_departemen | gaji  |
+|-------------|------------|------|---------------|-------|
+| 1           | Andi       | 35   | 101           | 15000 |
+| 2           | Budi       | 28   | 102           | 12000 |
+| 3           | Citra      | 40   | 101           | 18000 |
+| 4           | Diana      | 25   | 103           | 10000 |
+
+#### Relasi `Departemen`
+| id_departemen | nama_departemen |
+|---------------|-----------------|
+| 101           | IT              |
+| 102           | HR              |
+| 103           | Finance         |
+
+#### Relasi `Proyek`
+| id_proyek | nama_proyek | id_departemen | budget |
+|-----------|-------------|---------------|--------|
+| 1         | Proyek A    | 101           | 20000  |
+| 2         | Proyek B    | 103           | 15000  |
+| 3         | Proyek C    | 102           | 10000  |
+
+---
+
+### **Operasi Dasar**
+1. **Selection ($\sigma$)**  
+   **Query:** $\sigma_{usia > 30}(Karyawan)$  
+   **Deskripsi:** Pilih karyawan dengan usia lebih dari 30 tahun.  
+   **Hasil:**
+   | id_karyawan | nama   | usia | id_departemen | gaji  |
+   |-------------|--------|------|---------------|-------|
+   | 1           | Andi   | 35   | 101           | 15000 |
+   | 3           | Citra  | 40   | 101           | 18000 |
+
+2. **Projection ($\pi$)**  
+   **Query:** $\pi_{nama, gaji}(Karyawan)$  
+   **Deskripsi:** Tampilkan hanya kolom `nama` dan `gaji`.  
+   **Hasil:**
+   | nama  | gaji  |
+   |-------|-------|
+   | Andi  | 15000 |
+   | Budi  | 12000 |
+   | Citra | 18000 |
+   | Diana | 10000 |
+
+3. **Rename ($\rho$)**  
+   **Query:** $\rho_{KaryawanBaru}(Karyawan)$  
+   **Deskripsi:** Ganti nama relasi `Karyawan` menjadi `KaryawanBaru`.  
+   **Hasil:** Sama dengan tabel `Karyawan` tetapi dengan nama baru.
+
+---
+
+### **Operasi Himpunan**
+1. **Union ($\cup$)**  
+   Misalkan ada relasi tambahan:  
+   #### Relasi `Karyawan_Cabang2`
+   | id_karyawan | nama       | usia | id_departemen | gaji  |
+   |-------------|------------|------|---------------|-------|
+   | 5           | Eko        | 30   | 104           | 11000 |
+   | 3           | Citra      | 40   | 101           | 18000 |
+
+   **Query:** $Karyawan \cup Karyawan\_Cabang2$  
+   **Hasil:**  
+   | id_karyawan | nama   | usia | id_departemen | gaji  |
+   |-------------|--------|------|---------------|-------|
+   | 1           | Andi   | 35   | 101           | 15000 |
+   | 2           | Budi   | 28   | 102           | 12000 |
+   | 3           | Citra  | 40   | 101           | 18000 |
+   | 4           | Diana  | 25   | 103           | 10000 |
+   | 5           | Eko    | 30   | 104           | 11000 |
+
+2. **Intersection ($\cap$)**  
+   **Query:** $Karyawan \cap Karyawan\_Cabang2$  
+   **Hasil:**  
+   | id_karyawan | nama   | usia | id_departemen | gaji  |
+   |-------------|--------|------|---------------|-------|
+   | 3           | Citra  | 40   | 101           | 18000 |
+
+3. **Difference ($-$)**  
+   **Query:** $Karyawan - Karyawan\_Cabang2$  
+   **Hasil:**  
+   | id_karyawan | nama   | usia | id_departemen | gaji  |
+   |-------------|--------|------|---------------|-------|
+   | 1           | Andi   | 35   | 101           | 15000 |
+   | 2           | Budi   | 28   | 102           | 12000 |
+   | 4           | Diana  | 25   | 103           | 10000 |
+
+---
+
+### **Operasi Join**
+1. **Natural Join ($\bowtie$)**  
+   **Query:** $Karyawan \bowtie Departemen$  
+   **Deskripsi:** Gabungkan karyawan dengan departemen berdasarkan `id_departemen`.  
+   **Hasil:**
+   | id_karyawan | nama   | usia | id_departemen | gaji  | nama_departemen |
+   |-------------|--------|------|---------------|-------|-----------------|
+   | 1           | Andi   | 35   | 101           | 15000 | IT              |
+   | 2           | Budi   | 28   | 102           | 12000 | HR              |
+   | 3           | Citra  | 40   | 101           | 18000 | IT              |
+   | 4           | Diana  | 25   | 103           | 10000 | Finance         |
+
+2. **Theta Join ($\bowtie_{cond}$)**  
+   **Query:** $Karyawan \bowtie_{gaji > budget} Proyek$  
+   **Deskripsi:** Gabungkan karyawan dengan proyek jika `gaji > budget`.  
+   **Hasil:**
+   | id_karyawan | nama   | usia | id_departemen | gaji  | id_proyek | nama_proyek | id_departemen | budget |
+   |-------------|--------|------|---------------|-------|-----------|-------------|---------------|--------|
+   | 3           | Citra  | 40   | 101           | 18000 | 2         | Proyek B    | 103           | 15000 |
+
+---
+
+### **Operasi Lanjutan**
+1. **Group By ($\gamma$)**  
+   **Query:** $\gamma_{id_departemen, SUM(gaji)}(Karyawan)$  
+   **Deskripsi:** Hitung total gaji untuk setiap departemen.  
+   **Hasil:**
+   | id_departemen | total_gaji |
+   |---------------|------------|
+   | 101           | 33000      |
+   | 102           | 12000      |
+   | 103           | 10000      |
+
+2. **Division ($\divide$)**  
+   Misalkan relasi `Proyek_Wajib` memiliki:  
+   #### Relasi `Proyek_Wajib`
+   | id_proyek |
+   |-----------|
+   | 1         |
+   | 2         |
+
+   **Query:** $Karyawan \divide Proyek\_Wajib$  
+   **Deskripsi:** Cari karyawan yang bekerja di semua proyek wajib (Proyek A dan B).  
+   **Hasil:**
+   | id_karyawan | nama   |
+   |-------------|--------|
+   | (kosong)    | Tidak ada karyawan yang bekerja di semua proyek wajib. |
+
+---
+
+Semoga contoh ini membantu! Jika Anda butuh penjelasan tambahan, beri tahu saya. 😊
